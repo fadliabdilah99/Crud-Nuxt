@@ -53,6 +53,9 @@ export default defineNuxtConfig({
                   crossorigin: 'anonymous'
               },
               {
+                  src: 'https://cdn.jsdelivr.net/npm/sweetalert2@11',
+              },
+              {
                   src: '/assets/js/plugin/webfont/webfont.min.js',
               },
               {

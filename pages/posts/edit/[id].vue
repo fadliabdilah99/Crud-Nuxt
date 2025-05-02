@@ -3,10 +3,11 @@ useHead({
   title: "Halaman Edit",
 });
 
+
 const config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
-
+import { onMounted } from 'vue';
 
 const { data: posts } = await useAsyncData("posts", () => $fetch(`${config.public.baseUrl}/api/konten/${useRoute().params.id}`));
 
@@ -35,6 +36,12 @@ const updateKonten = async () => {
     router.push({ path: "/" });
   });
 };
+
+
+onMounted(() => {
+  Swal.fire("SweetAlert2 is working!");
+});
+
 </script>
 
 <template>

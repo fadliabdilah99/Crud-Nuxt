@@ -5,8 +5,7 @@ useHead({
 
 const config = useRuntimeConfig();
 const router = useRouter();
-
-console.log(config.public.baseUrl);
+// const { onMounted } = "vue";
 
 const { data: posts } = await useAsyncData("posts", () => $fetch(`${config.public.baseUrl}/api/konten`));
 
@@ -33,6 +32,24 @@ const postKonten = async () => {
     router.push({ path: "/" });
   });
 };
+
+async function deleteKonten(id) {
+  const result = await Swal.fire({
+    title: "Hapus Data?",
+    text: "Data akan dihapus permanen!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Ya, Hapus!",
+  });
+  if (result.isConfirmed) {
+    await $fetch(`${config.public.baseUrl}/api/konten/${id}`, {
+      method: "DELETE",
+    });
+    refreshNuxtData("posts");
+  }
+}
 </script>
 <template>
   <div class="col-md-12">
@@ -44,6 +61,10 @@ const postKonten = async () => {
             <i class="fa fa-plus"></i>
             Add Row
           </button>
+        </div>
+        <div v-if="response" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ response.message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       </div>
       <div class="card-body">
@@ -115,7 +136,7 @@ const postKonten = async () => {
 
                     <!-- <NuxtLink :to="`/posts/edit/${post.id}`" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</NuxtLink> -->
 
-                    <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
+                    <button type="button" @click="deleteKonten(post.id)" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                       <i class="fa fa-times"></i>
                     </button>
                   </div>
