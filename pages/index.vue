@@ -3,9 +3,17 @@ useHead({
   title: "Halaman Utama",
 });
 
+import { onMounted } from "vue";
+
+onMounted(() => {
+  const role = localStorage.getItem("role");
+  if (role !== "admin" && role !== "user") {
+    navigateTo("/login");
+  }
+});
+
 const config = useRuntimeConfig();
 const router = useRouter();
-// const { onMounted } = "vue";
 
 const { data: posts } = await useAsyncData("posts", () => $fetch(`${config.public.baseUrl}/api/konten`));
 
